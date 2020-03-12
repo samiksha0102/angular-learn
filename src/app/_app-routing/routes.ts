@@ -8,7 +8,7 @@ import { MenuComponent } from '../menu/menu.component';
 
 export const ROUTES: Routes = [
   {path:'home',component:HomeComponent},
-  {path:'contact',component:ContactComponent},
+  {path:'contactus',component:ContactComponent},
   {path:'aboutus',component:AboutComponent},
   {path:'menu',component:MenuComponent}, 
   {path:'dishdetail/:id',component:DishdetailComponent},
