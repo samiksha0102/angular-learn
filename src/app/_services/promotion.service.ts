@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PROMOTIONS } from '../_shared/promotions';
 import { Promotion } from '../_shared/promotion';
+import { of, Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +10,16 @@ import { Promotion } from '../_shared/promotion';
 export class PromotionService {
 
   constructor() { }
-  getPromotions(): Promotion[] {
-    return PROMOTIONS;
+  getPromotions(): Observable<Promotion[]> {
+    return of(PROMOTIONS).pipe(delay(2000));
   }
-  getPromotion(id: string): Promotion {
-    return PROMOTIONS.filter((promo) => { promo.id == id })[0];
+  getPromotion(id: string): Observable<Promotion> {
+    let resultPromo: Promotion = PROMOTIONS.filter((promotion) => promotion.id == id)[0]
+    return of(resultPromo).pipe(delay(2000));
+
   }
-  getFeaturedPromotion(): Promotion {
-    return PROMOTIONS.filter((promo) => promo.featured)[0];
+  getFeaturedPromotion(): Observable<Promotion> {
+    let resultPromo: Promotion = PROMOTIONS.filter((promotion) => promotion.featured)[0]
+    return of(resultPromo).pipe(delay(2000));
   }
 }
