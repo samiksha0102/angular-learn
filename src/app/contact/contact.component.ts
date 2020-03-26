@@ -79,7 +79,7 @@ export class ContactComponent implements OnInit {
   }
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
     this.feedbackForm.reset();
+    console.log(this.feedback);
   }
 }
