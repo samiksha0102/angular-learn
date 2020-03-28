@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Inject } from '@angular/core';
 import { Dish } from '../_shared/dish';
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -18,6 +18,8 @@ export class DishdetailComponent implements OnInit {
     prev: string;
     next: string;
     comment: Comment;
+    errMessage: string;
+    dishCopy: Dish;
     @ViewChild('formDirective') private formDirective: NgForm;
     formErrors = {
         'author': '',
@@ -35,7 +37,8 @@ export class DishdetailComponent implements OnInit {
     constructor(private dishService: DishService,
         private location: Location,
         private route: ActivatedRoute,
-        private formBuilder: FormBuilder) {
+        private formBuilder: FormBuilder,
+        @Inject('BaseURL') public BaseURL) {
         this.createForm();
     }
 
@@ -44,7 +47,13 @@ export class DishdetailComponent implements OnInit {
             .subscribe(dishIds => this.dishIds = dishIds);
         this.route.params
             .pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
-            .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+            .subscribe(dish => {
+                this.dish = dish;
+                this.dishCopy = dish;
+                this.setPrevNext(dish.id);
+            },
+                errmessage => this.errMessage = <any>errmessage);
+
     }
     createForm() {
         this.commentForm = this.formBuilder.group({
@@ -87,13 +96,24 @@ export class DishdetailComponent implements OnInit {
     onSubmit() {
         this.comment = this.commentForm.value;
         this.comment.date = new Date().toISOString();//geting current data in ISO String
-        this.dish.comments.push(this.comment);
+        this.dishCopy.comments.push(this.comment);
+        this.dishService.putDish(this.dishCopy)
+            .subscribe(dish => {
+                this.dish = dish;
+                this.dishCopy = dish;
+            },
+                errmessage => {
+                    this.dish = null;
+                    this.dishCopy = null;
+                    this.errMessage = <any>errmessage;
+                });
+        this.formDirective.resetForm();
+
         this.commentForm.reset({
             author: '',
             comment: '',
             rating: 5
         });
-        this.formDirective.resetForm();
         this.comment = null;
     }
 }

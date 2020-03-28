@@ -1,16 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import{MatToolbarModule} from '@angular/material/toolbar';
-import{FlexLayoutModule} from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppRoutingModule } from './_app-routing/app-routing.module';
 import { AppComponent } from './app.component';
 import 'hammerjs';
 import { MenuComponent } from './menu/menu.component';
-import {MatListModule} from '@angular/material/list';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { DishdetailComponent } from './dishdetail/dishdetail.component';
 import { DishService } from './_services/dish.service';
 import { HeaderComponent } from './header/header.component';
@@ -21,16 +21,22 @@ import { ContactComponent } from './contact/contact.component';
 import { PromotionService } from './_services/promotion.service';
 import { LeaderService } from './_services/leader.service';
 import { LoginComponent } from './login/login.component';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import { MatCheckboxModule} from '@angular/material/checkbox';
-import {FormsModule} from '@angular/forms';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
+import { HttpClientModule } from '@angular/common/http';
+import { ProcessHTTPMsgService } from './_services/process-httpmsg.service';
+import { baseURL } from './_shared/baseurl';
+import { HighlightDirective } from './_directives/highlight.directive';
+
+
 
 @NgModule({
   declarations: [
@@ -42,7 +48,8 @@ import {MatSliderModule} from '@angular/material/slider';
     HomeComponent,
     AboutComponent,
     ContactComponent,
-    LoginComponent
+    LoginComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
@@ -63,10 +70,11 @@ import {MatSliderModule} from '@angular/material/slider';
     MatSlideToggleModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    MatSliderModule
+    MatSliderModule,
+    HttpClientModule
   ],
-  entryComponents:[LoginComponent],
-  providers: [DishService,PromotionService,LeaderService],
+  entryComponents: [LoginComponent],
+  providers: [DishService, PromotionService, LeaderService, ProcessHTTPMsgService, { provide: 'BaseURL', useValue: baseURL }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
